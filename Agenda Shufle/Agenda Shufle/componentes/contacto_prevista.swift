@@ -7,16 +7,52 @@
 
 import SwiftUI
 
+
+let contato_prueba = ContactoAgenda(nombre: "Juaftyukftyuks", telefono: "12345")
+
 struct ContactoPrevista: View {
+    var contacto_a_mostar: ContactoAgenda
+    var al_pulsar: () -> Void = { print("No se ha implementado") }
+    
+    let esquinas_redondeadas = CGSize(width: 25, height: 25)
+    
     var body: some View {
-        HStack{
-            Image(systemName: "globe")
-            Text("Hello Darknes")
-            Text("My old friend")
+        HStack(alignment: VerticalAlignment.center){
+            Spacer()
+            
+            VStack {
+                Image("imagen")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(height: 75, alignment: .center)
+                    .clipShape(RoundedRectangle(cornerSize: esquinas_redondeadas))
+                    .background(Color.blue)
+                    
+            }.background(Color.white)
+            
+            Spacer()
+            
+            VStack(alignment: HorizontalAlignment.leading){
+                Text(contacto_a_mostar.nombre)
+                Text(contacto_a_mostar.telefono)
+            }
+                .background(Color.gray)
+                .frame(width: 150)
+            
+            
+            Spacer()
         }
+        .frame(width: 250)
+        .background(Color.red)
+        .onTapGesture {
+            al_pulsar()
+        }
+        
+        Spacer()
+
     }
 }
 
 #Preview {
-    ContactoPrevista()
+    ContactoPrevista(contacto_a_mostar: contato_prueba)
 }
