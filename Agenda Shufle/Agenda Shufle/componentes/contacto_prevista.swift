@@ -17,7 +17,7 @@ struct ContactoPrevista: View {
     let esquinas_redondeadas = CGSize(width: 25, height: 25)
     
     var body: some View {
-        HStack(alignment: VerticalAlignment.center){
+        HStack(alignment: VerticalAlignment.center, spacing: 10){
             Spacer()
             
             VStack {
@@ -32,27 +32,28 @@ struct ContactoPrevista: View {
             
             Spacer()
             
-            VStack(alignment: HorizontalAlignment.leading){
+            VStack(alignment: HorizontalAlignment.leading, spacing: 10){
                 Text(contacto_a_mostar.nombre)
                 Text(contacto_a_mostar.telefono)
             }
-                .background(Color.gray)
-                .frame(width: 150)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(Color.gray)
             
             
             Spacer()
         }
-        .frame(width: 250)
+        .frame(maxWidth: .infinity)
         .background(Color.red)
+        .clipShape(RoundedRectangle(cornerSize: esquinas_redondeadas))
+        // TAmbien se puede agragar un UnevenRoundedRectangle
         .onTapGesture {
             al_pulsar()
         }
-        
-        Spacer()
 
     }
 }
 
 #Preview {
     ContactoPrevista(contacto_a_mostar: contato_prueba)
+    Spacer()
 }

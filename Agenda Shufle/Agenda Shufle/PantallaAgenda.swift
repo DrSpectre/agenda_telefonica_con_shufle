@@ -31,7 +31,6 @@ struct PantallaAgenda: View {
     var ancho_de_pantalla = UIScreen.main.bounds.height
     
     var body: some View {
-
         ScrollView {
             VStack(spacing: 10) {
                 ForEach(contactos){ contacto in
@@ -39,10 +38,50 @@ struct PantallaAgenda: View {
                     ContactoPrevista(contacto_a_mostar: contacto, al_pulsar: {print("Te envia saludos \(contacto.nombre) desde la pantalla de agenda")})
                 }
             }
+            .frame(alignment: Alignment.center)
+            .padding(10)
             .background(Color.cyan)
-            .frame(width: largo_de_pantalla, alignment: Alignment.center)
         }
         .background(Color.green)
+        
+        HStack(alignment: VerticalAlignment.center, spacing: 25){
+            
+            ZStack{
+                Circle()
+                    .frame(width: 100)
+                    .tint(Color.red)
+                    .foregroundColor(Color.green)
+                
+                Rectangle()
+                    .frame(width: 65, height: 65)
+                    .foregroundColor(Color.cyan)
+                Image(systemName: "plus")
+                    .background(Color.red)
+            }
+            .padding(15)
+            .onTapGesture {
+                print("Falta implemetnar esta parte")
+            }
+            
+            Spacer()
+            
+            ZStack{
+                Circle()
+                    .frame(width: 100)
+                    .tint(Color.red)
+                    .foregroundColor(Color.green)
+                
+                Circle()
+                    .frame(width: 65, height: 65)
+                    .foregroundColor(Color.cyan)
+                Image(systemName: "shuffle")
+                    .background(Color.red)
+            }
+            .padding(15)
+            .onTapGesture {
+                print("Lanzar un intent para iniciar la llamada")
+            }
+        }
 
 
     }
