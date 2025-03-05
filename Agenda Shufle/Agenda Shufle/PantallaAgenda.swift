@@ -30,10 +30,20 @@ struct PantallaAgenda: View {
     var largo_de_pantalla = UIScreen.main.bounds.width
     var ancho_de_pantalla = UIScreen.main.bounds.height
     
+    @State var mostrar_pantalla_agregar_contacto: Bool = false
+    
+    @State var contactos_actuales: [ContactoAgenda] = [
+        ContactoAgenda(nombre: "Judsana", telefono: "12345"),
+        ContactoAgenda(nombre: "Judsana", telefono: "12345"),
+        ContactoAgenda(nombre: "Judsana", telefono: "12345"),
+        ContactoAgenda(nombre: "Judsana", telefono: "12345"),
+        ContactoAgenda(nombre: "Judsana", telefono: "12345"),
+        
+    ]
     var body: some View {
         ScrollView {
             VStack(spacing: 10) {
-                ForEach(contactos){ contacto in
+                ForEach(contactos_actuales){ contacto in
                     //Text("\(contacto.nombre)")
                     ContactoPrevista(contacto_a_mostar: contacto, al_pulsar: {print("Te envia saludos \(contacto.nombre) desde la pantalla de agenda")})
                 }
@@ -60,7 +70,8 @@ struct PantallaAgenda: View {
             }
             .padding(15)
             .onTapGesture {
-                print("Falta implemetnar esta parte")
+                print("Falta implementar la seccion de agregar contacto")
+                mostrar_pantalla_agregar_contacto.toggle()
             }
             
             Spacer()
@@ -81,7 +92,19 @@ struct PantallaAgenda: View {
             .onTapGesture {
                 print("Lanzar un intent para iniciar la llamada")
             }
-        }
+        }.background(Color.purple)
+            .sheet(isPresented: $mostrar_pantalla_agregar_contacto) {
+                PantallaAgregarContacto(
+                    boton_salir: {
+                        mostrar_pantalla_agregar_contacto.toggle()
+                    },
+                    boton_agregar: {nombre, numero in
+                        let contacto_nuevo = ContactoAgenda(nombre: nombre, telefono: numero)
+                        contactos_actuales.append(contacto_nuevo)
+                        mostrar_pantalla_agregar_contacto.toggle()
+                    }
+                )
+            }
 
 
     }
