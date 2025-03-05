@@ -38,8 +38,8 @@ struct PantallaAgenda: View {
         ContactoAgenda(nombre: "Judsana", telefono: "12345"),
         ContactoAgenda(nombre: "Judsana", telefono: "12345"),
         ContactoAgenda(nombre: "Judsana", telefono: "12345"),
-        
     ]
+    
     var body: some View {
         ScrollView {
             VStack(spacing: 10) {
@@ -105,6 +105,7 @@ struct PantallaAgenda: View {
                     }
                 )
             }
+            //.sheet(item: <#T##Binding<Identifiable?>#>, content: <#T##(Identifiable) -> View#>)
 
 
     }
