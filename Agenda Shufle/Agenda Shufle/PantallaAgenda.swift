@@ -7,24 +7,20 @@
 
 import SwiftUI
 
+/*
+enum Pantallas: String, Identifiable{
+    case pantalla1, pantalla2
+    
+    var id: String { rawValue }
+}
+*/
 
-let contactos = [
-    ContactoAgenda(nombre: "Juna", telefono: "12345"),
-    ContactoAgenda(nombre: "Jun", telefono: "12345"),
-    ContactoAgenda(nombre: "Ja", telefono: "12345"),
-    ContactoAgenda(nombre: "Juaftyukftyuks", telefono: "12345"),
-    ContactoAgenda(nombre: "Junsda", telefono: "12345"),
-    ContactoAgenda(nombre: "Judsana", telefono: "12345"),
-    ContactoAgenda(nombre: "Juasdna", telefono: "12345"),
-    ContactoAgenda(nombre: "Jusdana", telefono: "12345"),
-    ContactoAgenda(nombre: "Judsana", telefono: "12345"),
-    ContactoAgenda(nombre: "Judsana", telefono: "12345"),
-    ContactoAgenda(nombre: "Judsana", telefono: "12345"),
-    ContactoAgenda(nombre: "Judsana", telefono: "12345"),
-    ContactoAgenda(nombre: "Judsana", telefono: "12345"),
-    ContactoAgenda(nombre: "Judsana", telefono: "12345"),
-]
-
+enum PantallasDisponibles: String, Identifiable{
+    case pantalla_agregar, pantalla_aleatorio
+    
+    var id: String { rawValue }
+    
+}
 
 struct PantallaAgenda: View {
     var largo_de_pantalla = UIScreen.main.bounds.width
@@ -34,23 +30,28 @@ struct PantallaAgenda: View {
     
     @State var contactos_actuales: [ContactoAgenda] = [
         ContactoAgenda(nombre: "Judsana", telefono: "12345"),
-        ContactoAgenda(nombre: "Judsana", telefono: "12345"),
-        ContactoAgenda(nombre: "Judsana", telefono: "12345"),
-        ContactoAgenda(nombre: "Judsana", telefono: "12345"),
-        ContactoAgenda(nombre: "Judsana", telefono: "12345"),
+        ContactoAgenda(nombre: "Judsina", telefono: "12345"),
+        ContactoAgenda(nombre: "Juds", telefono: "12345"),
     ]
     
+    @State var pantalla_a_mostrar: PantallasDisponibles?
+    
     var body: some View {
-        ScrollView {
-            VStack(spacing: 10) {
-                ForEach(contactos_actuales){ contacto in
-                    //Text("\(contacto.nombre)")
-                    ContactoPrevista(contacto_a_mostar: contacto, al_pulsar: {print("Te envia saludos \(contacto.nombre) desde la pantalla de agenda")})
+        NavigationStack{
+            ScrollView {
+                VStack(spacing: 10) {
+                    ForEach(contactos_actuales){ contacto in
+                        NavigationLink{
+                            ContactoPrevista(contacto_a_mostar: contacto)
+                        } label: {
+                            ContactoPrevista(contacto_a_mostar: contacto, al_pulsar: {print("Te envia saludos \(contacto.nombre) desde la pantalla de agenda")})
+                        }
+                    }
                 }
+                .frame(alignment: Alignment.center)
+                .padding(10)
+                .background(Color.cyan)
             }
-            .frame(alignment: Alignment.center)
-            .padding(10)
-            .background(Color.cyan)
         }
         .background(Color.green)
         
@@ -71,7 +72,7 @@ struct PantallaAgenda: View {
             .padding(15)
             .onTapGesture {
                 print("Falta implementar la seccion de agregar contacto")
-                mostrar_pantalla_agregar_contacto.toggle()
+                pantalla_a_mostrar = PantallasDisponibles.pantalla_agregar
             }
             
             Spacer()
@@ -91,23 +92,30 @@ struct PantallaAgenda: View {
             .padding(15)
             .onTapGesture {
                 print("Lanzar un intent para iniciar la llamada")
+                pantalla_a_mostrar = PantallasDisponibles.pantalla_aleatorio
             }
         }.background(Color.purple)
             .sheet(isPresented: $mostrar_pantalla_agregar_contacto) {
-                PantallaAgregarContacto(
-                    boton_salir: {
-                        mostrar_pantalla_agregar_contacto.toggle()
-                    },
-                    boton_agregar: {nombre, numero in
-                        let contacto_nuevo = ContactoAgenda(nombre: nombre, telefono: numero)
-                        contactos_actuales.append(contacto_nuevo)
-                        mostrar_pantalla_agregar_contacto.toggle()
-                    }
-                )
+                
             }
-            //.sheet(item: <#T##Binding<Identifiable?>#>, content: <#T##(Identifiable) -> View#>)
-
-
+            .sheet(item: $pantalla_a_mostrar){ pantalla in
+                switch(pantalla){
+                case .pantalla_agregar:
+                    PantallaAgregarContacto(
+                        boton_salir: {
+                            pantalla_a_mostrar = PantallasDisponibles.pantalla_aleatorio
+                        },
+                        boton_agregar: {nombre, numero, imagen_seleccionada in
+                            let contacto_nuevo = ContactoAgenda(nombre: nombre, telefono: numero, imagen: imagen_seleccionada)
+                            contactos_actuales.append(contacto_nuevo)
+                            pantalla_a_mostrar = nil
+                        }
+                    )
+                case .pantalla_aleatorio:
+                    Text("Adios mundo")
+                }
+                
+            }
     }
 }
 

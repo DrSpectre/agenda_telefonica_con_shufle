@@ -21,7 +21,7 @@ struct ContactoPrevista: View {
             Spacer()
             
             VStack {
-                Image("imagen")
+                Image(contacto_a_mostar.imagen)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(height: 75, alignment: .center)
