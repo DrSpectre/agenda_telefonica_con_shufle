@@ -42,9 +42,10 @@ struct PantallaAgenda: View {
                 VStack(spacing: 10) {
                     ForEach(contactos_actuales){ contacto in
                         NavigationLink{
-                            ContactoPrevista(contacto_a_mostar: contacto)
+                            PantallaContacto(contacto_a_mostrar: contacto)
                         } label: {
-                            ContactoPrevista(contacto_a_mostar: contacto, al_pulsar: {print("Te envia saludos \(contacto.nombre) desde la pantalla de agenda")})
+                            ContactoPrevista(contacto_a_mostar: contacto)
+
                         }
                     }
                 }
@@ -52,8 +53,10 @@ struct PantallaAgenda: View {
                 .padding(10)
                 .background(Color.cyan)
             }
+            .background(Color.green)
         }
-        .background(Color.green)
+        
+        // Aqui acaba el scroll view
         
         HStack(alignment: VerticalAlignment.center, spacing: 25){
             

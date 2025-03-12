@@ -46,9 +46,9 @@ struct ContactoPrevista: View {
         .background(Color.red)
         .clipShape(RoundedRectangle(cornerSize: esquinas_redondeadas))
         // TAmbien se puede agragar un UnevenRoundedRectangle
-        .onTapGesture {
-            al_pulsar()
-        }
+        //.onTapGesture {
+        //    al_pulsar()
+        //}
 
     }
 }

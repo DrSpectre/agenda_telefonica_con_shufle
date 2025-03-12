@@ -7,10 +7,18 @@
 
 import SwiftUI
 
+enum Imagenes: String, Identifiable {
+    case imagen, imagen2
+    
+    var id: String { rawValue }
+}
+
 struct PantallaAgregarContacto: View {
     @State private var nombre: String = ""
     @State private var numero_telefonico: String = ""
     @State private var imagen_seleccionada: String = "imagen"
+    
+    @State private var imagen_selec: Imagenes?
     
     var boton_salir: () -> Void = {
         print("PARECE QUE TE HAS EQUIVOCADO")
@@ -55,25 +63,43 @@ struct PantallaAgregarContacto: View {
         .background(Color.cyan)
         
         HStack{
-            Image("imagen")
-                .resizable()
-                .scaledToFit()
-                .frame(height: 75)
-                .onTapGesture {
-                    imagen_seleccionada = "imagen"
-                }
-            Image("imagen")
-                .resizable()
-                .scaledToFit()
-                .frame(height: 75)
-                .onTapGesture {
-                    imagen_seleccionada = "imagen2"
-                }
+            SeleccionImagen(imagen: Imagenes.imagen, imagen_seleccionada: $imagen_selec)
+
+
+            SeleccionImagen(imagen: Imagenes.imagen2, imagen_seleccionada: $imagen_selec)
         }
 
     }
     
 }
+
+struct SeleccionImagen: View {
+    var anchura: CGFloat = 75
+    var imagen: Imagenes
+    
+    @Binding var imagen_seleccionada: Imagenes?
+    
+    @State private var seleccionado: Bool = false
+    
+    var body: some View{
+        ZStack{
+            Circle()
+                .foregroundColor((imagen_seleccionada?.rawValue == imagen.rawValue) ? Color.red: Color.gray)
+                .frame(height: anchura + 10)
+            Image(imagen.id)
+                .resizable()
+                .scaledToFit()
+                .frame(height: anchura)
+                .clipShape(Circle())
+        }
+        .onTapGesture {
+            print(imagen)
+            imagen_seleccionada = imagen
+        }
+
+    }
+}
+
 
 #Preview {
     PantallaAgregarContacto()
